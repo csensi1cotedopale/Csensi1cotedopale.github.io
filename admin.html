@@ -67,6 +67,19 @@
     <button onclick="connexion()">Se connecter</button>
 
     <div id="message"></div>
+    <div id="dashboard"
+    style="display:none; margin-top:25px;">
+  <hr>
+  <h2>Tableau de bord administrateur</h2>
+  <p>Bienvenue dans la gestion du site CSEE NSI1 Côte d'Opale.</p>
+
+  <button>📰 Gérer les actualités</button>
+  <button>🎁 Gérer les avantages</button>
+  <button>🏆 Gérer les concours</button>
+  <button>📊 Gérer les sondages</button>
+  <button>✈️ Gérer les voyages</button>
+  <button>🖼️ Gérer la galerie</button>
+</div>
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -97,6 +110,7 @@
       }
 
       message.textContent = "Connexion réussie.";
+      document.getElementById("dashboard").style.display = "block";
     }
   </script>
 
