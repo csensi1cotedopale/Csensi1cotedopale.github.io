@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Gestion des actualités - CSEE NSI1 Côte d'Opale</title>
+
+<style>
+body{
+  margin:0;
+  font-family:Arial,sans-serif;
+  background:#fff8f3;
+  color:#432019;
+}
+
+header{
+  background:#8f1d14;
+  color:white;
+  padding:25px;
+  text-align:center;
+}
+
+.container{
+  max-width:850px;
+  margin:35px auto;
+  padding:25px;
+}
+
+.card{
+  background:white;
+  padding:30px;
+  border-radius:18px;
+  box-shadow:0 8px 30px rgba(0,0,0,.10);
+}
+
+h1,h2{
+  margin-top:0;
+}
+
+h2{
+  color:#8f1d14;
+}
+
+label{
+  display:block;
+  margin-top:18px;
+  margin-bottom:6px;
+  font-weight:bold;
+}
+
+input,textarea{
+  width:100%;
+  box-sizing:border-box;
+  padding:13px;
+  border:1px solid #ccc;
+  border-radius:8px;
+  font-size:16px;
+}
+
+textarea{
+  min-height:160px;
+  resize:vertical;
+}
+
+button{
+  margin-top:22px;
+  padding:14px 22px;
+  border:0;
+  border-radius:9px;
+  background:#a51d13;
+  color:white;
+  font-size:16px;
+  font-weight:bold;
+  cursor:pointer;
+}
+
+.retour{
+  display:inline-block;
+  margin-bottom:20px;
+  color:#8f1d14;
+  text-decoration:none;
+  font-weight:bold;
+}
+
+.info{
+  margin-top:20px;
+  padding:15px;
+  background:#fff1e8;
+  border-radius:9px;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1>CSEE NSI1 Côte d'Opale</h1>
+  <p>Espace administrateur</p>
+</header>
+
+<div class="container">
+
+  <a class="retour" href="admin.html">
+    ← Retour au tableau de bord
+  </a>
+
+  <div class="card">
+
+    <h2>📰 Gérer les actualités</h2>
+
+    <p>
+      Ajoutez une nouvelle actualité destinée aux collaborateurs.
+    </p>
+
+    <label for="titre">Titre de l'actualité</label>
+    <input
+      id="titre"
+      type="text"
+      placeholder="Exemple : Carte cadeau de fin d'année"
+    >
+
+    <label for="date">Date</label>
+    <input id="date" type="date">
+
+    <label for="texte">Texte de l'actualité</label>
+    <textarea
+      id="texte"
+      placeholder="Écrivez votre actualité ici..."
+    ></textarea>
+
+    <label for="image">Image</label>
+    <input id="image" type="file" accept="image/*">
+
+    <button type="button">
+      Publier l'actualité
+    </button>
+
+    <div class="info">
+      La publication automatique sera reliée à Supabase à l'étape suivante.
+    </div>
+
+  </div>
+
+</div>
+
+</body>
+</html>
