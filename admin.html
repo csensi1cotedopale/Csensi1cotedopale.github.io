@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Administration - CSEE NSI1 Côte d'Opale</title>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #fff8f3;
+      color: #432019;
+    }
+
+    .admin {
+      max-width: 520px;
+      margin: 80px auto;
+      padding: 35px;
+      background: white;
+      border-radius: 18px;
+      box-shadow: 0 10px 35px rgba(0,0,0,.12);
+    }
+
+    h1 {
+      color: #a51d13;
+      text-align: center;
+    }
+
+    input, button {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 14px;
+      margin-top: 12px;
+      border-radius: 9px;
+      font-size: 16px;
+    }
+
+    input {
+      border: 1px solid #ccc;
+    }
+
+    button {
+      border: 0;
+      background: #a51d13;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    #message {
+      margin-top: 18px;
+      text-align: center;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="admin">
+    <h1>Administration</h1>
+    <p>Connexion à l'espace administrateur du CSEE NSI1 Côte d'Opale.</p>
+
+    <input id="email" type="email" placeholder="Adresse e-mail">
+    <input id="password" type="password" placeholder="Mot de passe">
+
+    <button onclick="connexion()">Se connecter</button>
+
+    <div id="message"></div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <script>
+    const SUPABASE_URL = "https://cqzkhwajtfkuxqhdhyzs.supabase.co";
+    const SUPABASE_KEY = "sb_publishable_mhYOwr8dNzCdeIt4DiRzzg_C1YgC4zi";
+
+    const supabaseClient =
+      supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    async function connexion() {
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+      const message = document.getElementById("message");
+
+      message.textContent = "Connexion...";
+
+      const { data, error } =
+        await supabaseClient.auth.signInWithPassword({
+          email: email,
+          password: password
+        });
+
+      if (error) {
+        message.textContent = "Identifiants incorrects.";
+        return;
+      }
+
+      message.textContent = "Connexion réussie.";
+    }
+  </script>
+
+</body>
+</html>
