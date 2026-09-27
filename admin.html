@@ -105,6 +105,17 @@
         });
 
       if (error) {
+       const { data: profile, error: profileError } = await supabaseClient
+  .from("profiles")
+  .select("role")
+  .eq("id", data.user.id)
+  .single();
+
+if (profileError || !profile || profile.role !== "admin") {
+  await supabaseClient.auth.signOut();
+  message.textContent = "Accès refusé : administrateur uniquement.";
+  return;
+}
         message.textContent = "Identifiants incorrects.";
         return;
       }
