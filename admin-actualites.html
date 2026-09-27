@@ -132,9 +132,11 @@ button{
     <label for="image">Image</label>
     <input id="image" type="file" accept="image/*">
 
-    <button type="button">
-      Publier l'actualité
-    </button>
+    <button type="button" id="publierBtn">
+  Publier l'actualité
+</button>
+
+<p id="messagePublication"></p>
 
     <div class="info">
       La publication automatique sera reliée à Supabase à l'étape suivante.
@@ -143,6 +145,47 @@ button{
   </div>
 
 </div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
+<script>
+const SUPABASE_URL = "https://cqzkhwajtfkuxqhdhyzs.supabase.co";
+const SUPABASE_KEY = "sb_publishable_mhYOwr8dNzCdeIt4DiRzzg_C1YgC4zi";
+
+const supabaseClient = supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY
+);
+  document.getElementById("publierBtn").addEventListener("click", async () => {
+
+  const titre = document.getElementById("titre").value.trim();
+  const contenu = document.getElementById("texte").value.trim();
+  const date_publication = document.getElementById("date").value;
+  const message = document.getElementById("messagePublication");
+
+  if (!titre || !contenu || !date_publication) {
+    message.textContent = "Merci de remplir le titre, la date et le texte.";
+    return;
+  }
+
+  const { error } = await supabaseClient
+    .from("actualites")
+    .insert({
+      titre: titre,
+      contenu: contenu,
+      date_publication: date_publication
+    });
+
+  if (error) {
+    message.textContent = "Impossible de publier : " + error.message;
+    return;
+  }
+
+  message.textContent = "✅ Actualité publiée avec succès !";
+
+  document.getElementById("titre").value = "";
+  document.getElementById("texte").value = "";
+  document.getElementById("date").value = "";
+});
+</script>
 </body>
 </html>
