@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gestion des anniversaires - CSEE NSI1 Côte d'Opale</title>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f7f0e6;
+      color: #4b251f;
+    }
+
+    .container {
+      max-width: 750px;
+      margin: 30px auto;
+      padding: 20px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 22px;
+      padding: 30px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+    }
+
+    h1 {
+      margin-top: 0;
+      color: #57271f;
+    }
+
+    label {
+      display: block;
+      font-weight: bold;
+      margin-top: 20px;
+      margin-bottom: 7px;
+    }
+
+    input, textarea {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 14px;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      font-size: 16px;
+    }
+
+    textarea {
+      min-height: 120px;
+      resize: vertical;
+    }
+
+    button {
+      width: 100%;
+      margin-top: 22px;
+      padding: 16px;
+      border: none;
+      border-radius: 12px;
+      background: #b82017;
+      color: white;
+      font-size: 18px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .retour {
+      display: inline-block;
+      margin-bottom: 20px;
+      color: #8b241c;
+      font-weight: bold;
+      text-decoration: none;
+    }
+
+    #messagePublication {
+      margin-top: 18px;
+      text-align: center;
+      font-weight: bold;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <a class="retour" href="admin-avantages.html">
+    ← Retour aux avantages
+  </a>
+
+  <div class="card">
+
+    <h1>🎂 Gérer les anniversaires</h1>
+
+    <p>
+      Ajoutez ici un anniversaire à afficher dans l'espace
+      « Moments de vie des salariés ».
+    </p>
+
+    <label for="nom">Nom / Prénom</label>
+    <input type="text" id="nom" placeholder="Ex. Marie Dupont">
+
+    <label for="date">Date d'anniversaire</label>
+    <input type="date" id="date">
+
+    <label for="message">Petit message</label>
+    <textarea id="message"
+      placeholder="Ex. Le CSEE souhaite un très joyeux anniversaire à Marie ! 🎉"></textarea>
+
+    <label for="photo">Photo (facultative)</label>
+    <input type="file" id="photo" accept="image/*">
+
+    <button type="button" id="publierBtn">
+      🎂 Publier l'anniversaire
+    </button>
+
+    <p id="messagePublication"></p>
+
+  </div>
+</div>
+
+<script>
+  const SUPABASE_URL = "https://cqzkhwajtfkuxqhdhyzs.supabase.co";
+
+  // Remplace uniquement le texte ci-dessous par la même clé
+  // sb_publishable_... que celle utilisée dans admin.html.
+  const SUPABASE_KEY = "sb_publishable_mhYOwr8dNzCdeIt4DiRzzg_C1YgC4zi";
+
+  const supabaseClient = supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+  );
+
+  document
+    .getElementById("publierBtn")
+    .addEventListener("click", publierAnniversaire);
+
+  async function publierAnniversaire() {
+
+    const nom = document.getElementById("nom").value.trim();
+    const date = document.getElementById("date").value;
+    const message = document.getElementById("message").value.trim();
+    const zoneMessage = document.getElementById("messagePublication");
+
+    if (!nom || !date) {
+      zoneMessage.textContent =
+        "⚠️ Indiquez au minimum le nom et la date d'anniversaire.";
+      return;
+    }
+
+    zoneMessage.textContent = "Publication en cours...";
+
+    const { error } = await supabaseClient
+      .from("anniversaires")
+      .insert({
+        nom: nom,
+        date_anniversaire: date,
+        message: message || null,
+        photo_url: null
+      });
+
+    if (error) {
+      console.error(error);
+      zoneMessage.textContent =
+        "❌ Impossible de publier l'anniversaire.";
+      return;
+    }
+
+    zoneMessage.textContent =
+      "✅ Anniversaire publié avec succès !";
+
+    document.getElementById("nom").value = "";
+    document.getElementById("date").value = "";
+    document.getElementById("message").value = "";
+    document.getElementById("photo").value = "";
+  }
+</script>
+
+</body>
+</html>
