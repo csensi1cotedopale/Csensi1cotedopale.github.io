@@ -160,19 +160,41 @@ const supabaseClient = supabase.createClient(
   const titre = document.getElementById("titre").value.trim();
   const contenu = document.getElementById("texte").value.trim();
   const date_publication = document.getElementById("date").value;
+  const imageFile = document.getElementById("image").files[0];
   const message = document.getElementById("messagePublication");
 
   if (!titre || !contenu || !date_publication) {
     message.textContent = "Merci de remplir le titre, la date et le texte.";
     return;
   }
+  let image_url = null;
 
+if (imageFile) {
+  const extension = imageFile.name.split(".").pop();
+  const nomFichier = Date.now() + "." + extension;
+
+  const { error: uploadError } = await supabaseClient.storage
+    .from("actualites-images")
+    .upload(nomFichier, imageFile);
+
+  if (uploadError) {
+    message.textContent = "Impossible d'envoyer l'image : " + uploadError.message;
+    return;
+  }
+
+  const { data: imageData } = supabaseClient.storage
+    .from("actualites-images")
+    .getPublicUrl(nomFichier);
+
+  image_url = imageData.publicUrl;
+}
   const { error } = await supabaseClient
     .from("actualites")
     .insert({
-      titre: titre,
-      contenu: contenu,
-      date_publication: date_publication
+    titre: titre,
+contenu: contenu,
+date_publication: date_publication,
+image_url: image_url
     });
 
   if (error) {
@@ -185,6 +207,7 @@ const supabaseClient = supabase.createClient(
   document.getElementById("titre").value = "";
   document.getElementById("texte").value = "";
   document.getElementById("date").value = "";
+  document.getElementById("image").value = "";
 });
 </script>
 </body>
