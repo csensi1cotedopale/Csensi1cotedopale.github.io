@@ -125,8 +125,6 @@
 <script>
   const SUPABASE_URL = "https://cqzkhwajtfkuxqhdhyzs.supabase.co";
 
-  // Remplace uniquement le texte ci-dessous par la même clé
-  // sb_publishable_... que celle utilisée dans admin.html.
   const SUPABASE_KEY = "sb_publishable_mhYOwr8dNzCdeIt4DiRzzg_C1YgC4zi";
 
   const supabaseClient = supabase.createClient(
@@ -143,6 +141,7 @@
     const nom = document.getElementById("nom").value.trim();
     const date = document.getElementById("date").value;
     const message = document.getElementById("message").value.trim();
+    const photo = document.getElementById("photo").files[0];
     const zoneMessage = document.getElementById("messagePublication");
 
     if (!nom || !date) {
@@ -153,13 +152,39 @@
 
     zoneMessage.textContent = "Publication en cours...";
 
+    let photo_url = null;
+
+    if (photo) {
+
+      const extension = photo.name.split(".").pop();
+      const nomFichier =
+        Date.now() + "-" + Math.random().toString(36).substring(2) + "." + extension;
+
+      const { error: uploadError } = await supabaseClient.storage
+        .from("anniversaires-images")
+        .upload(nomFichier, photo);
+
+      if (uploadError) {
+        console.error(uploadError);
+        zoneMessage.textContent =
+          "❌ Impossible d'envoyer la photo.";
+        return;
+      }
+
+      const { data: urlData } = supabaseClient.storage
+        .from("anniversaires-images")
+        .getPublicUrl(nomFichier);
+
+      photo_url = urlData.publicUrl;
+    }
+
     const { error } = await supabaseClient
       .from("anniversaires")
       .insert({
         nom: nom,
         date_anniversaire: date,
         message: message || null,
-        photo_url: null
+        photo_url: photo_url
       });
 
     if (error) {
