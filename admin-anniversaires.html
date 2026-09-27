@@ -167,7 +167,7 @@
       if (uploadError) {
         console.error(uploadError);
         zoneMessage.textContent =
-          "❌ Impossible d'envoyer la photo.";
+          "❌ Erreur : " + error.message;
         return;
       }
 
