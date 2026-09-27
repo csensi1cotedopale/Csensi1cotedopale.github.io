@@ -189,8 +189,7 @@
 
     if (error) {
       console.error(error);
-      zoneMessage.textContent =
-        "❌ Impossible de publier l'anniversaire.";
+      zoneMessage.textContent = "❌ Erreur : " + error.message;
       return;
     }
 
