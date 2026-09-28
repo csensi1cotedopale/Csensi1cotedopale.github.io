@@ -252,18 +252,45 @@
           .toLocaleDateString("fr-FR")
       : "";
 
-    carte.innerHTML = `
-      ${photo}
-      <h3>🎂 ${anniversaire.nom}</h3>
-      <p><strong>Date :</strong> ${date}</p>
-      <p>${anniversaire.message || ""}</p>
-    `;
+   carte.innerHTML = `
+  ${photo}
+  <h3>🎂 ${anniversaire.nom}</h3>
+  <p><strong>Date :</strong> ${date}</p>
+  <p>${anniversaire.message || ""}</p>
+
+  <button
+    type="button"
+    onclick="supprimerAnniversaire(${anniversaire.id})"
+    style="background:#8f1d14;margin-top:10px;">
+    🗑️ Supprimer
+  </button>
+`; 
 
     liste.appendChild(carte);
   });
 }
 
 chargerAnniversaires();
+ async function supprimerAnniversaire(id) {
+  const confirmation = confirm(
+    "Voulez-vous vraiment supprimer cet anniversaire ?"
+  );
+
+  if (!confirmation) return;
+
+  const { error } = await supabaseClient
+    .from("anniversaires")
+    .delete()
+    .eq("id", id);
+
+  if (error) {
+    alert("❌ Erreur : " + error.message);
+    return;
+  }
+
+  alert("✅ Anniversaire supprimé.");
+  await chargerAnniversaires();
+} 
 </script>
 
 </body>
