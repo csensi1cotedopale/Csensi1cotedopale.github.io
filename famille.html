@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Famille - CSEE NSI1 Côte d'Opale</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f7f0e5;
+      color: #3c302c;
+    }
+
+    header {
+      background: #7a2431;
+      color: white;
+      text-align: center;
+      padding: 35px 20px;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 34px;
+    }
+
+    header p {
+      margin-top: 10px;
+      font-size: 17px;
+    }
+
+    .retour {
+      max-width: 1000px;
+      margin: 25px auto 0;
+      padding: 0 20px;
+    }
+
+    .retour a {
+      color: #7a2431;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .conteneur {
+      max-width: 1000px;
+      margin: 25px auto 60px;
+      padding: 0 20px;
+    }
+
+    .intro {
+      text-align: center;
+      margin-bottom: 35px;
+    }
+
+    .intro h2 {
+      color: #7a2431;
+      font-size: 27px;
+    }
+
+    .cartes {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 22px;
+    }
+
+    .carte {
+      background: white;
+      border-radius: 18px;
+      padding: 30px 25px;
+      text-align: center;
+      box-shadow: 0 5px 18px rgba(0,0,0,0.08);
+    }
+
+    .icone {
+      font-size: 45px;
+      margin-bottom: 12px;
+    }
+
+    .carte h3 {
+      color: #7a2431;
+      margin: 10px 0;
+    }
+
+    .carte p {
+      line-height: 1.6;
+      min-height: 70px;
+    }
+
+    .bouton {
+      display: inline-block;
+      margin-top: 12px;
+      padding: 12px 22px;
+      background: #7a2431;
+      color: white;
+      text-decoration: none;
+      border-radius: 25px;
+      font-weight: bold;
+    }
+
+    .bientot {
+      display: inline-block;
+      margin-top: 12px;
+      padding: 12px 22px;
+      background: #e8ded2;
+      color: #6a5a52;
+      border-radius: 25px;
+      font-weight: bold;
+    }
+
+    .confidentiel {
+      margin-top: 35px;
+      background: #fff;
+      border-left: 5px solid #7a2431;
+      border-radius: 12px;
+      padding: 20px;
+      line-height: 1.6;
+    }
+
+    footer {
+      text-align: center;
+      padding: 25px;
+      background: #eee3d6;
+      color: #5c504a;
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <h1>👨‍👩‍👧 Espace Famille</h1>
+  <p>CSEE NSI1 Côte d'Opale</p>
+</header>
+
+<div class="retour">
+  <a href="avantages.html">← Retour aux avantages</a>
+</div>
+
+<main class="conteneur">
+
+  <section class="intro">
+    <h2>Vos démarches liées aux moments de vie</h2>
+    <p>
+      Retrouvez ici les démarches proposées aux collaborateurs
+      concernant les événements importants de la vie familiale.
+    </p>
+  </section>
+
+  <section class="cartes">
+
+    <div class="carte">
+      <div class="icone">👶</div>
+      <h3>Naissance</h3>
+      <p>
+        Vous venez d'accueillir un enfant ?
+        Transmettez votre déclaration et votre justificatif
+        au CSEE en toute confidentialité.
+      </p>
+
+      <a class="bouton" href="declarer-naissance.html">
+        Déclarer une naissance
+      </a>
+    </div>
+
+    <div class="carte">
+      <div class="icone">💍</div>
+      <h3>Mariage / PACS</h3>
+      <p>
+        Déclarez prochainement votre mariage ou votre PACS
+        et transmettez les justificatifs nécessaires au CSEE.
+      </p>
+
+      <span class="bientot">Bientôt disponible</span>
+    </div>
+
+    <div class="carte">
+      <div class="icone">🎁</div>
+      <h3>Avantages famille</h3>
+      <p>
+        Retrouvez prochainement les autres prestations
+        et avantages proposés par votre CSEE pour votre famille.
+      </p>
+
+      <span class="bientot">À venir</span>
+    </div>
+
+  </section>
+
+  <div class="confidentiel">
+    🔒 <strong>Confidentialité :</strong>
+    les informations et justificatifs transmis dans le cadre
+    de vos déclarations sont destinés au traitement de votre
+    demande par le CSEE et ne sont pas publiés sur le site.
+  </div>
+
+</main>
+
+<footer>
+  CSEE NSI1 Côte d'Opale
+</footer>
+
+</body>
+</html>
