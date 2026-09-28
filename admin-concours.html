@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gestion des concours - CSEE NSI1 Côte d'Opale</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #fff8f3;
+    color: #432019;
+}
+
+header {
+    background: #8f1d14;
+    color: white;
+    padding: 25px;
+    text-align: center;
+}
+
+.container {
+    max-width: 900px;
+    margin: 30px auto;
+    padding: 25px;
+}
+
+.retour {
+    display: inline-block;
+    background: #1d1d23;
+    color: white;
+    padding: 12px 20px;
+    text-decoration: none;
+    border-radius: 8px;
+    margin-bottom: 25px;
+}
+
+.card {
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    margin-bottom: 25px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.10);
+}
+
+input, textarea {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 12px;
+    margin: 8px 0 15px;
+    border: 1px solid #ccc;
+    border-radius: 7px;
+}
+
+textarea {
+    min-height: 120px;
+}
+
+button {
+    background: #a92519;
+    color: white;
+    border: none;
+    padding: 13px 20px;
+    border-radius: 7px;
+    cursor: pointer;
+    font-weight: bold;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>🏆 Gestion des concours</h1>
+    <p>CSEE NSI1 Côte d'Opale</p>
+</header>
+
+<div class="container">
+
+<a class="retour" href="admin.html">← Retour au tableau de bord</a>
+
+<div class="card">
+    <h2>Créer un nouveau concours</h2>
+
+    <label>Titre du concours</label>
+    <input type="text" id="titre" placeholder="Ex : Concours du plus beau sapin">
+
+    <label>Description</label>
+    <textarea id="description" placeholder="Présentez le concours..."></textarea>
+
+    <label>Date de début</label>
+    <input type="date" id="dateDebut">
+
+    <label>Date de fin</label>
+    <input type="date" id="dateFin">
+
+    <label>Image ou affiche</label>
+    <input type="file" id="image" accept="image/*">
+
+    <button type="button">🏆 Publier le concours</button>
+</div>
+
+<div class="card">
+    <h2>Concours publiés</h2>
+    <div id="listeConcours">
+        Aucun concours publié pour le moment.
+    </div>
+</div>
+
+</div>
+
+</body>
+</html>
