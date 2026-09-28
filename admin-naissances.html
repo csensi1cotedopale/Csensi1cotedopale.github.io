@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Déclarations de naissance - CSEE NSI1 Côte d'Opale</title>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #fff8f3;
+      color: #432019;
+    }
+
+    header {
+      background: #8f1d14;
+      color: white;
+      padding: 25px;
+      text-align: center;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 30px auto;
+      padding: 20px;
+    }
+
+    .retour {
+      display: inline-block;
+      margin-bottom: 20px;
+      padding: 10px 16px;
+      background: #432019;
+      color: white;
+      text-decoration: none;
+      border-radius: 8px;
+    }
+
+    .declaration {
+      background: white;
+      padding: 20px;
+      margin-bottom: 18px;
+      border-radius: 12px;
+      box-shadow: 0 3px 12px rgba(0,0,0,0.12);
+    }
+
+    .declaration p {
+      margin: 8px 0;
+    }
+
+    .statut {
+      font-weight: bold;
+      color: #8f1d14;
+    }
+
+    button {
+      border: none;
+      border-radius: 7px;
+      padding: 10px 14px;
+      margin: 8px 5px 0 0;
+      cursor: pointer;
+      background: #8f1d14;
+      color: white;
+    }
+
+    .vide {
+      text-align: center;
+      padding: 30px;
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <h1>👶 Déclarations de naissance</h1>
+  <p>CSEE NSI1 Côte d'Opale</p>
+</header>
+
+<div class="container">
+
+  <a class="retour" href="admin.html">← Retour au tableau de bord</a>
+
+  <div id="liste">
+    Chargement des déclarations...
+  </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+const SUPABASE_URL = "https://cqzkhwajtfkuxqhdhyzs.supabase.co";
+const SUPABASE_KEY = "sb_publishable_mhYOwr8dNzCdeIt4DiRzzg_C1YgC4zi";
+
+const supabaseClient = supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY
+);
+
+async function chargerDeclarations() {
+
+  const liste = document.getElementById("liste");
+
+  const { data, error } = await supabaseClient
+    .from("declarations_naissance")
+    .select("*")
+    .order("created_at", { ascending: false });
+
+  if (error) {
+    liste.innerHTML = "❌ Impossible de charger les déclarations : " + error.message;
+    return;
+  }
+
+  if (!data || data.length === 0) {
+    liste.innerHTML =
+      '<div class="vide">Aucune déclaration de naissance pour le moment.</div>';
+    return;
+  }
+
+  liste.innerHTML = "";
+
+  data.forEach(function(d) {
+
+    const bloc = document.createElement("div");
+    bloc.className = "declaration";
+
+    const nom = document.createElement("p");
+    nom.textContent = "Collaborateur : " +
+      (d.prenom_collaborateur || "") + " " +
+      (d.nom_collaborateur || "");
+
+    const email = document.createElement("p");
+    email.textContent = "E-mail : " + (d.email || "");
+
+    const enfant = document.createElement("p");
+    enfant.textContent = "Prénom de l'enfant : " + (d.prenom_enfant || "");
+
+    const naissance = document.createElement("p");
+    naissance.textContent = "Date de naissance : " + (d.date_naissance || "");
+
+    const message = document.createElement("p");
+    message.textContent = "Message : " + (d.message || "Aucun message");
+
+    const statut = document.createElement("p");
+    statut.className = "statut";
+    statut.textContent = "Statut : " + (d.statut || "à traiter");
+
+    bloc.appendChild(nom);
+    bloc.appendChild(email);
+    bloc.appendChild(enfant);
+    bloc.appendChild(naissance);
+    bloc.appendChild(message);
+    bloc.appendChild(statut);
+
+    if (d.justificatif_path) {
+      const bouton = document.createElement("button");
+      bouton.textContent = "📄 Voir le justificatif";
+
+      bouton.onclick = async function() {
+        const { data: fichier, error: erreurFichier } =
+          await supabaseClient.storage
+            .from("justificatifs-naissance")
+            .createSignedUrl(d.justificatif_path, 60);
+
+        if (erreurFichier) {
+          alert("Impossible d'ouvrir le justificatif.");
+          return;
+        }
+
+        window.open(fichier.signedUrl, "_blank");
+      };
+
+      bloc.appendChild(bouton);
+    }
+
+    liste.appendChild(bloc);
+  });
+}
+
+chargerDeclarations();
+</script>
+
+</body>
+</html>
