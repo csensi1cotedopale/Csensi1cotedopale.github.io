@@ -137,7 +137,7 @@
       demande par le CSEE. Il ne sera pas affiché dans la partie
       publique du site.
     </div>
-
+<form id="naissanceForm">
     <label>
       Nom du collaborateur <span class="obligatoire">*</span>
     </label>
@@ -186,11 +186,12 @@
 
     
 
-    <button type="button" id="envoyer">
+    <button type="submit" id="envoyer">
       👶 Envoyer ma déclaration
     </button>
 
     <p id="resultat"></p>
+</form>
 
   </div>
 </div>
@@ -215,10 +216,11 @@ document.getElementById("naissanceForm").addEventListener("submit", async functi
   const dateNaissance = document.getElementById("dateNaissance").value;
   const justificatif = document.getElementById("justificatif").files[0];
   const message = document.getElementById("message").value.trim();
-  const statutMessage = document.getElementById("statutMessage");
+  const resultat = document.getElementById("resultat");
+  const resultat = document.getElementById("resultat");
 
   if (!justificatif) {
-    statutMessage.textContent = "❌ Veuillez ajouter l'acte de naissance.";
+    resultat.textContent = "❌ Veuillez ajouter l'acte de naissance.";
     return;
   }
 
@@ -230,18 +232,18 @@ document.getElementById("naissanceForm").addEventListener("submit", async functi
   ];
 
   if (!typesAutorises.includes(justificatif.type)) {
-    statutMessage.textContent =
+    resultat.textContent =
       "❌ Format non accepté. Utilisez PDF, JPG, PNG ou WEBP.";
     return;
   }
 
   if (justificatif.size > 5 * 1024 * 1024) {
-    statutMessage.textContent =
+    resultat.textContent =
       "❌ Le justificatif ne doit pas dépasser 5 Mo.";
     return;
   }
 
-  statutMessage.textContent = "⏳ Envoi de votre déclaration...";
+  resultat.textContent = "⏳ Envoi de votre déclaration...";
 
   try {
     const extension = justificatif.name.split(".").pop();
