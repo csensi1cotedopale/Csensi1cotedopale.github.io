@@ -198,6 +198,30 @@ if (d.statut === "traitee") {
 }
 
 bloc.appendChild(boutonTraite);
+   const boutonSupprimer = document.createElement("button");
+boutonSupprimer.textContent = "🗑️ Supprimer";
+
+boutonSupprimer.onclick = async function() {
+  const confirmation = confirm(
+    "Voulez-vous vraiment supprimer cette déclaration ?"
+  );
+
+  if (!confirmation) return;
+
+  const { error } = await supabaseClient
+    .from("declarations_naissance")
+    .delete()
+    .eq("id", d.id);
+
+  if (error) {
+    alert("❌ Impossible de supprimer la déclaration.");
+    return;
+  }
+
+  bloc.remove();
+};
+
+bloc.appendChild(boutonSupprimer); 
     liste.appendChild(bloc);
   });
 }
