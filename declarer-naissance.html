@@ -184,16 +184,7 @@
       placeholder="Vous pouvez ajouter ici une information ou un message."
     ></textarea>
 
-    <div class="choix">
-      <input type="checkbox" id="accordPublication">
-
-      <label for="accordPublication"
-             style="display:inline;font-weight:normal;">
-        J'autorise le CSEE à publier le prénom de mon enfant
-        et un message concernant cette naissance dans
-        « Moments de vie des collaborateurs ».
-      </label>
-    </div>
+    
 
     <button type="button" id="envoyer">
       👶 Envoyer ma déclaration
@@ -203,6 +194,96 @@
 
   </div>
 </div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
+<script>
+const SUPABASE_URL = "https://cqzkhwajtfkuxqhdhyzs.supabase.co";
+const SUPABASE_KEY = "sb_publishable_mhYOwr8dNzCdeIt4DiRzzg_C1YgC4zi";
+
+const supabaseClient = supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY
+);
+
+document.getElementById("naissanceForm").addEventListener("submit", async function(event) {
+  event.preventDefault();
+
+  const nom = document.getElementById("nom").value.trim();
+  const prenom = document.getElementById("prenom").value.trim();
+  const email = document.getElementById("email").value.trim();
+  const prenomEnfant = document.getElementById("prenomEnfant").value.trim();
+  const dateNaissance = document.getElementById("dateNaissance").value;
+  const justificatif = document.getElementById("justificatif").files[0];
+  const message = document.getElementById("message").value.trim();
+  const statutMessage = document.getElementById("statutMessage");
+
+  if (!justificatif) {
+    statutMessage.textContent = "❌ Veuillez ajouter l'acte de naissance.";
+    return;
+  }
+
+  const typesAutorises = [
+    "application/pdf",
+    "image/jpeg",
+    "image/png",
+    "image/webp"
+  ];
+
+  if (!typesAutorises.includes(justificatif.type)) {
+    statutMessage.textContent =
+      "❌ Format non accepté. Utilisez PDF, JPG, PNG ou WEBP.";
+    return;
+  }
+
+  if (justificatif.size > 5 * 1024 * 1024) {
+    statutMessage.textContent =
+      "❌ Le justificatif ne doit pas dépasser 5 Mo.";
+    return;
+  }
+
+  statutMessage.textContent = "⏳ Envoi de votre déclaration...";
+
+  try {
+    const extension = justificatif.name.split(".").pop();
+    const nomFichier =
+      crypto.randomUUID() + "." + extension;
+
+    const { error: uploadError } = await supabaseClient.storage
+      .from("justificatifs-naissance")
+      .upload(nomFichier, justificatif);
+
+    if (uploadError) {
+      throw uploadError;
+    }
+
+    const { error: declarationError } = await supabaseClient
+      .from("declarations_naissance")
+      .insert({
+        nom_collaborateur: nom,
+        prenom_collaborateur: prenom,
+        email: email,
+        prenom_enfant: prenomEnfant,
+        date_naissance: dateNaissance,
+        message: message || null,
+        justificatif_path: nomFichier,
+        statut: "a_traiter"
+      });
+
+    if (declarationError) {
+      throw declarationError;
+    }
+
+    statutMessage.textContent =
+      "✅ Votre déclaration a bien été transmise au CSEE.";
+
+    document.getElementById("naissanceForm").reset();
+
+  } catch (error) {
+    console.error(error);
+    statutMessage.textContent =
+      "❌ Une erreur est survenue : " + error.message;
+  }
+});
+</script>
 </body>
 </html>
