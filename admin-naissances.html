@@ -173,7 +173,31 @@ async function chargerDeclarations() {
 
       bloc.appendChild(bouton);
     }
+const boutonTraite = document.createElement("button");
+boutonTraite.textContent = "✅ Marquer comme traitée";
 
+boutonTraite.onclick = async function() {
+  const { error } = await supabaseClient
+    .from("declarations_naissance")
+    .update({ statut: "traitee" })
+    .eq("id", d.id);
+
+  if (error) {
+    alert("❌ Impossible de modifier le statut.");
+    return;
+  }
+
+  statut.textContent = "Statut : traitée";
+  boutonTraite.textContent = "✅ Traitée";
+  boutonTraite.disabled = true;
+};
+
+if (d.statut === "traitee") {
+  boutonTraite.textContent = "✅ Traitée";
+  boutonTraite.disabled = true;
+}
+
+bloc.appendChild(boutonTraite);
     liste.appendChild(bloc);
   });
 }
