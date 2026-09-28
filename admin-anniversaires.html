@@ -121,7 +121,12 @@
 
   </div>
 </div>
-
+<div class="card" style="margin-top:25px;">
+  <h2>🎉 Anniversaires publiés</h2>
+  <div id="listeAnniversaires">
+    Chargement des anniversaires...
+  </div>
+</div>
 <script>
   const SUPABASE_URL = "https://cqzkhwajtfkuxqhdhyzs.supabase.co";
 
@@ -200,7 +205,65 @@
     document.getElementById("date").value = "";
     document.getElementById("message").value = "";
     document.getElementById("photo").value = "";
+    await chargerAnniversaires();
   }
+  async function chargerAnniversaires() {
+  const liste = document.getElementById("listeAnniversaires");
+
+  const { data, error } = await supabaseClient
+    .from("anniversaires")
+    .select("*")
+    .order("date_anniversaire", { ascending: true });
+
+  if (error) {
+    liste.innerHTML = "❌ Impossible de charger les anniversaires.";
+    return;
+  }
+
+  if (!data || data.length === 0) {
+    liste.innerHTML = "<p>Aucun anniversaire publié pour le moment.</p>";
+    return;
+  }
+
+  liste.innerHTML = "";
+
+  data.forEach((anniversaire) => {
+    const carte = document.createElement("div");
+
+    carte.style.background = "#f7f0e6";
+    carte.style.padding = "18px";
+    carte.style.marginTop = "15px";
+    carte.style.borderRadius = "12px";
+
+    let photo = "";
+
+    if (anniversaire.photo_url) {
+      photo = `
+        <img
+          src="${anniversaire.photo_url}"
+          alt="Photo anniversaire"
+          style="width:100px;height:100px;object-fit:cover;border-radius:50%;margin-bottom:10px;"
+        >
+      `;
+    }
+
+    const date = anniversaire.date_anniversaire
+      ? new Date(anniversaire.date_anniversaire + "T00:00:00")
+          .toLocaleDateString("fr-FR")
+      : "";
+
+    carte.innerHTML = `
+      ${photo}
+      <h3>🎂 ${anniversaire.nom}</h3>
+      <p><strong>Date :</strong> ${date}</p>
+      <p>${anniversaire.message || ""}</p>
+    `;
+
+    liste.appendChild(carte);
+  });
+}
+
+chargerAnniversaires();
 </script>
 
 </body>
