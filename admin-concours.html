@@ -135,6 +135,34 @@ const dateFin = document.getElementById('dateFin').value;
     alert('Concours publié avec succès !');
 }
 }
+    async function chargerConcours() {
+    const { data, error } = await supabaseClient
+        .from('concours')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+    const liste = document.getElementById('listeConcours');
+
+    if (error) {
+        liste.innerHTML = 'Erreur lors du chargement des concours.';
+        return;
+    }
+
+    if (!data || data.length === 0) {
+        liste.innerHTML = 'Aucun concours publié pour le moment.';
+        return;
+    }
+
+    liste.innerHTML = data.map(concours => `
+        <div style="padding:15px; margin:10px 0; border:1px solid #ddd; border-radius:10px;">
+            <h3>${concours.titre}</h3>
+            <p>${concours.description || ''}</p>
+            <p><strong>Du :</strong> ${concours.date_debut || ''} 
+            <strong>au :</strong> ${concours.date_fin || ''}</p>
+        </div>
+    `).join('');
+}
+   chargerConcours(); 
 </script>    
 </body>
 </html>
