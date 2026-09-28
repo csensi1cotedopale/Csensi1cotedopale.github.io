@@ -121,13 +121,31 @@ button {
 const description = document.getElementById('description').value;
 const dateDebut = document.getElementById('dateDebut').value;
 const dateFin = document.getElementById('dateFin').value;
+       const imageFile = document.getElementById('image').files[0];
+        let imagePath = null;
+
+if (imageFile) {
+    const fileName = Date.now() + '-' + imageFile.name;
+
+    const { error: uploadError } = await supabaseClient.storage
+        .from('concours-images')
+        .upload(fileName, imageFile);
+
+    if (uploadError) {
+        alert("Erreur lors de l'envoi de l'image : " + uploadError.message);
+        return;
+    }
+
+    imagePath = fileName;
+}
        const { error } = await supabaseClient
     .from('concours')
     .insert([{
         titre: titre,
         description: description,
         date_debut: dateDebut,
-        date_fin: dateFin
+        date_fin: dateFin,
+image_path: imagePath
     }]);
         if (error) {
     alert('Erreur : ' + error.message);
@@ -155,6 +173,7 @@ const dateFin = document.getElementById('dateFin').value;
 
     liste.innerHTML = data.map(concours => `
         <div style="padding:15px; margin:10px 0; border:1px solid #ddd; border-radius:10px;">
+        ${concours.image_path ? `<img src="https://cqzkhwajtfkuxqhdhyzs.supabase.co/storage/v1/object/public/concours-images/${concours.image_path}" style="max-width:300px; width:100%; border-radius:10px;">` : ''}
             <h3>${concours.titre}</h3>
             <p>${concours.description || ''}</p>
             <p><strong>Du :</strong> ${concours.date_debut || ''} 
