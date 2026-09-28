@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Déclarer une naissance - CSEE NSI1 Côte d'Opale</title>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f7f0e6;
+      color: #4b251f;
+    }
+
+    header {
+      background: #8f1d14;
+      color: white;
+      padding: 28px 20px;
+      text-align: center;
+    }
+
+    header h1 {
+      margin: 0 0 8px 0;
+    }
+
+    .container {
+      max-width: 750px;
+      margin: 30px auto;
+      padding: 20px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 20px;
+      padding: 30px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+    }
+
+    .intro {
+      line-height: 1.6;
+      margin-bottom: 25px;
+    }
+
+    .confidentiel {
+      background: #f7f0e6;
+      border-radius: 12px;
+      padding: 15px;
+      margin-bottom: 25px;
+      line-height: 1.5;
+    }
+
+    label {
+      display: block;
+      font-weight: bold;
+      margin-top: 20px;
+      margin-bottom: 7px;
+    }
+
+    input, textarea, select {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 14px;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      font-size: 16px;
+      background: white;
+    }
+
+    textarea {
+      min-height: 100px;
+      resize: vertical;
+    }
+
+    .choix {
+      margin-top: 22px;
+      line-height: 1.5;
+    }
+
+    .choix input {
+      width: auto;
+      margin-right: 8px;
+    }
+
+    button {
+      width: 100%;
+      margin-top: 25px;
+      padding: 16px;
+      border: none;
+      border-radius: 12px;
+      background: #b82017;
+      color: white;
+      font-size: 18px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .retour {
+      display: inline-block;
+      margin-bottom: 20px;
+      color: #8f1d14;
+      font-weight: bold;
+      text-decoration: none;
+    }
+
+    .obligatoire {
+      color: #b82017;
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <h1>👶 Déclarer une naissance</h1>
+  <p>Espace collaborateur – CSEE NSI1 Côte d'Opale</p>
+</header>
+
+<div class="container">
+
+  <a class="retour" href="avantages.html">
+    ← Retour aux avantages
+  </a>
+
+  <div class="card">
+
+    <p class="intro">
+      Vous souhaitez déclarer la naissance de votre enfant au
+      CSEE NSI1 Côte d'Opale ? Complétez ce formulaire et joignez
+      le justificatif demandé.
+    </p>
+
+    <div class="confidentiel">
+      🔒 <strong>Document confidentiel</strong><br>
+      Le justificatif transmis est destiné au traitement de votre
+      demande par le CSEE. Il ne sera pas affiché dans la partie
+      publique du site.
+    </div>
+
+    <label>
+      Nom du collaborateur <span class="obligatoire">*</span>
+    </label>
+    <input type="text" id="nom" required>
+
+    <label>
+      Prénom du collaborateur <span class="obligatoire">*</span>
+    </label>
+    <input type="text" id="prenom" required>
+
+    <label>
+      Adresse e-mail <span class="obligatoire">*</span>
+    </label>
+    <input type="email" id="email" required>
+
+    <label>
+      Prénom de l'enfant <span class="obligatoire">*</span>
+    </label>
+    <input type="text" id="prenomEnfant" required>
+
+    <label>
+      Date de naissance <span class="obligatoire">*</span>
+    </label>
+    <input type="date" id="dateNaissance" required>
+
+    <label>
+      Justificatif – acte de naissance
+      <span class="obligatoire">*</span>
+    </label>
+
+    <input
+      type="file"
+      id="justificatif"
+      accept=".pdf,image/jpeg,image/png,image/webp"
+      required
+    >
+
+    <label>
+      Message pour le CSEE (facultatif)
+    </label>
+
+    <textarea
+      id="message"
+      placeholder="Vous pouvez ajouter ici une information ou un message."
+    ></textarea>
+
+    <div class="choix">
+      <input type="checkbox" id="accordPublication">
+
+      <label for="accordPublication"
+             style="display:inline;font-weight:normal;">
+        J'autorise le CSEE à publier le prénom de mon enfant
+        et un message concernant cette naissance dans
+        « Moments de vie des collaborateurs ».
+      </label>
+    </div>
+
+    <button type="button" id="envoyer">
+      👶 Envoyer ma déclaration
+    </button>
+
+    <p id="resultat"></p>
+
+  </div>
+</div>
+
+</body>
+</html>
