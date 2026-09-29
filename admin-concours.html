@@ -116,6 +116,7 @@ button {
     const SUPABASE_KEY = 'sb_publishable_mhYOwr8dNzCdeIt4DiRzzg_C1YgC4zi';
     const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
     document.getElementById('publierConcours').addEventListener('click', publierConcours);
+    let concoursEnModification = null;
     async function publierConcours() {
         const titre = document.getElementById('titre').value;
 const description = document.getElementById('description').value;
@@ -137,6 +138,33 @@ if (imageFile) {
     }
 
     imagePath = fileName;
+}
+        if (concoursEnModification) {
+    const modifications = {
+        titre: titre,
+        description: description,
+        date_debut: dateDebut,
+        date_fin: dateFin
+    };
+
+    if (imagePath) {
+        modifications.image_path = imagePath;
+    }
+
+    const { error } = await supabaseClient
+        .from('concours')
+        .update(modifications)
+        .eq('id', concoursEnModification);
+
+    if (error) {
+        alert("Erreur lors de la modification : " + error.message);
+    } else {
+        alert("Concours modifié avec succès !");
+        concoursEnModification = null;
+        chargerConcours();
+    }
+
+    return;
 }
        const { error } = await supabaseClient
     .from('concours')
@@ -201,6 +229,7 @@ image_path: imagePath
   chargerConcours();
 }
    async function modifierConcours(id) {
+       concoursEnModification = id;
     const { data, error } = await supabaseClient
         .from('concours')
         .select('*')
