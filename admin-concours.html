@@ -178,6 +178,7 @@ image_path: imagePath
             <p>${concours.description || ''}</p>
             <p><strong>Du :</strong> ${concours.date_debut || ''} 
             <strong>au :</strong> ${concours.date_fin || ''}</p>
+           <button type="button" onclick="modifierConcours('${concours.id}')">✏️ Modifier</button> 
             <button type="button" onclick="supprimerConcours('${concours.id}')">🗑️ Supprimer</button>
         </div>
     `).join('');
@@ -199,6 +200,23 @@ image_path: imagePath
   alert("Concours supprimé !");
   chargerConcours();
 }
+   async function modifierConcours(id) {
+    const { data, error } = await supabaseClient
+        .from('concours')
+        .select('*')
+        .eq('id', id)
+        .single();
+
+    if (error) {
+        alert("Erreur : " + error.message);
+        return;
+    }
+
+    document.getElementById('titre').value = data.titre || '';
+    document.getElementById('description').value = data.description || '';
+    document.getElementById('dateDebut').value = data.date_debut || '';
+    document.getElementById('dateFin').value = data.date_fin || '';
+} 
 </script>    
 </body>
 </html>
